@@ -48,7 +48,7 @@ export const Items: React.FC = () => {
     // Fetch rooms
     const qRooms = query(collection(db, 'rooms'));
     const unsubscribeRooms = onSnapshot(qRooms, (qs) => {
-      setRooms(qs.docs.map(doc => ({ id: doc.id, name: doc.data().name })));
+      setRooms(qs.docs.map(doc => ({ id: doc.id, name: doc.data().name, manager: doc.data().manager })));
     });
 
     return () => {
@@ -310,6 +310,7 @@ export const Items: React.FC = () => {
                   <Folder className="w-6 h-6" />
                 </div>
                 <h3 className="font-bold text-slate-800 text-lg mb-1 truncate" title={room.name}>{room.name}</h3>
+                <p className="text-xs text-slate-400 mb-4 font-medium italic">PJ: {room.manager || '-'}</p>
                 <div className="text-sm text-slate-500 flex justify-between mt-auto">
                   <span>{roomStats[room.name]?.types || 0} Jenis</span>
                   <span className="font-semibold text-slate-700">{roomStats[room.name]?.stock || 0} Total Stok</span>

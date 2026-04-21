@@ -9,6 +9,7 @@ interface Room {
   id: string;
   name: string;
   description: string;
+  manager: string;
 }
 
 export const Rooms: React.FC = () => {
@@ -22,7 +23,7 @@ export const Rooms: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
   const [roomToDelete, setRoomToDelete] = useState<{ id: string, name: string } | null>(null);
-  const [formData, setFormData] = useState({ name: '', description: '' });
+  const [formData, setFormData] = useState({ name: '', description: '', manager: '' });
 
   useEffect(() => {
     if (!isAdmin) return;
@@ -37,10 +38,14 @@ export const Rooms: React.FC = () => {
   const handleOpenModal = (room?: Room) => {
     if (room) {
       setEditingRoom(room);
-      setFormData({ name: room.name, description: room.description });
+      setFormData({ 
+        name: room.name, 
+        description: room.description, 
+        manager: room.manager || '' 
+      });
     } else {
       setEditingRoom(null);
-      setFormData({ name: '', description: '' });
+      setFormData({ name: '', description: '', manager: '' });
     }
     setIsModalOpen(true);
   };
@@ -84,7 +89,8 @@ export const Rooms: React.FC = () => {
 
   const filteredRooms = rooms.filter(room => 
     room.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    room.description.toLowerCase().includes(searchTerm.toLowerCase())
+    room.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (room.manager || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (!isAdmin) {
@@ -128,6 +134,7 @@ export const Rooms: React.FC = () => {
               <thead className="bg-slate-50 border-b border-slate-100">
                 <tr className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   <th className="px-6 py-4 whitespace-nowrap">Nama Ruangan</th>
+                  <th className="px-6 py-4 whitespace-nowrap">Penanggung Jawab</th>
                   <th className="px-6 py-4 whitespace-nowrap">Keterangan</th>
                   <th className="px-6 py-4 whitespace-nowrap text-center">Aksi</th>
                 </tr>
@@ -141,6 +148,7 @@ export const Rooms: React.FC = () => {
                         {room.name}
                       </div>
                     </td>
+                    <td className="px-6 py-4 text-slate-700 font-medium">{room.manager || '-'}</td>
                     <td className="px-6 py-4 text-slate-600">{room.description || '-'}</td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
@@ -178,6 +186,17 @@ export const Rooms: React.FC = () => {
               onChange={e => setFormData({...formData, name: e.target.value})} 
               className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" 
               placeholder="Cth: Gudang A"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-slate-700">Penanggung Jawab</label>
+            <input 
+              required 
+              type="text" 
+              value={formData.manager} 
+              onChange={e => setFormData({...formData, manager: e.target.value})} 
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" 
+              placeholder="Cth: Budi Santoso"
             />
           </div>
           <div className="space-y-1.5">

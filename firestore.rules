@@ -82,9 +82,10 @@ service cloud.firestore {
 
     // Room Validator
     function isValidRoom(data) {
-      return data.keys().hasAll(['name', 'description', 'createdAt', 'updatedAt']) &&
+      return data.keys().hasAll(['name', 'description', 'manager', 'createdAt', 'updatedAt']) &&
         data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
         data.description is string && data.description.size() >= 0 && data.description.size() <= 200 &&
+        data.manager is string && data.manager.size() >= 0 && data.manager.size() <= 100 &&
         data.createdAt is timestamp && data.updatedAt is timestamp;
     }
 
@@ -93,7 +94,7 @@ service cloud.firestore {
       allow list: if isSignedIn();
       allow create: if isAdmin() && isValidRoom(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time;
       allow update: if isAdmin() && isValidRoom(incoming()) && incoming().updatedAt == request.time && 
-        (incoming().diff(existing()).affectedKeys().hasOnly(['name', 'description', 'updatedAt']));
+        (incoming().diff(existing()).affectedKeys().hasOnly(['name', 'description', 'manager', 'updatedAt']));
       allow delete: if isAdmin();
     }
   }

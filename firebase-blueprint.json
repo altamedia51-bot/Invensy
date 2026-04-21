@@ -42,6 +42,17 @@
         "description": { "type": "string" }
       },
       "required": ["itemId", "type", "quantity", "date", "user", "userId", "description"]
+    },
+    "Room": {
+      "title": "Room",
+      "description": "Inventory Location/Room",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "manager": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["name", "manager", "description"]
     }
   },
   "firestore": {
@@ -56,6 +67,10 @@
     "/transactions/{transactionId}": {
       "schema": { "$ref": "#/entities/Transaction" },
       "description": "History of items IN/OUT."
+    },
+    "/rooms/{roomId}": {
+      "schema": { "$ref": "#/entities/Room" },
+      "description": "Inventory storage rooms."
     }
   }
 }
