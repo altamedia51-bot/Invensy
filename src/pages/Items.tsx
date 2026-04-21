@@ -12,7 +12,6 @@ interface Item {
   code: string;
   category: string;
   stock: number;
-  unit: string;
   location: string;
   condition?: string;
 }
@@ -29,7 +28,7 @@ export const Items: React.FC = () => {
   const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [itemToDelete, setItemToDelete] = useState<{ id: string, name: string } | null>(null);
   const [formData, setFormData] = useState({
-    name: '', code: '', category: '', stock: 0, unit: '', location: '', condition: 'Baik'
+    name: '', code: '', category: '', stock: 0, location: '', condition: 'Baik'
   });
   
   const [rooms, setRooms] = useState<{id: string, name: string}[]>([]);
@@ -62,11 +61,11 @@ export const Items: React.FC = () => {
     if (item) {
       setEditingItem(item);
       setFormData({
-        name: item.name, code: item.code, category: item.category, stock: item.stock, unit: item.unit, location: item.location, condition: item.condition || 'Baik'
+        name: item.name, code: item.code, category: item.category, stock: item.stock, location: item.location, condition: item.condition || 'Baik'
       });
     } else {
       setEditingItem(null);
-      setFormData({ name: '', code: '', category: '', stock: 0, unit: '', location: '', condition: 'Baik' });
+      setFormData({ name: '', code: '', category: '', stock: 0, location: '', condition: 'Baik' });
     }
     setIsModalOpen(true);
   };
@@ -111,7 +110,7 @@ export const Items: React.FC = () => {
   };
 
   const handleDownloadTemplate = () => {
-    const csvContent = "KODE_BARANG,NAMA_BARANG,KATEGORI,JUMLAH_AWAL,SATUAN,LOKASI,KONDISI\nBRG-001,Laptop Asus,Elektronik,10,Unit,Gudang A,Baik";
+    const csvContent = "KODE_BARANG,NAMA_BARANG,KATEGORI,JUMLAH_AWAL,LOKASI,KONDISI\nBRG-001,Laptop Asus,Elektronik,10,Gudang A,Baik";
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
@@ -143,7 +142,6 @@ export const Items: React.FC = () => {
               name: row.NAMA_BARANG.substring(0, 150),
               category: (row.KATEGORI || '').substring(0, 50),
               stock: Math.max(0, Number(row.JUMLAH_AWAL || row.STOK_AWAL) || 0),
-              unit: (row.SATUAN || 'Pcs').substring(0, 20),
               location: (row.LOKASI || '').substring(0, 100),
               condition: (row.KONDISI || 'Baik').substring(0, 50),
               createdAt: serverTimestamp(),
@@ -206,7 +204,6 @@ export const Items: React.FC = () => {
   }, [items, rooms]);
 
   const uniqueCategories = Array.from(new Set(items.map(item => item.category).filter(Boolean))).sort();
-  const uniqueUnits = Array.from(new Set(items.map(item => item.unit).filter(Boolean))).sort();
 
   return (
     <div className="flex flex-col h-full w-full">
@@ -378,7 +375,6 @@ export const Items: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <span className="font-mono text-base font-bold text-slate-900">{item.stock}</span>
-                      <span className="text-xs text-slate-500 ml-1">{item.unit}</span>
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
@@ -449,18 +445,6 @@ export const Items: React.FC = () => {
               <input required type="number" min="0" value={formData.stock} onChange={e => setFormData({...formData, stock: Number(e.target.value)})} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" disabled={!!editingItem} title={editingItem ? "Gunakan fitur transaksi untuk mengubah jumlah barang" : ""} />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">Satuan</label>
-              <input required type="text" list="unit-options" value={formData.unit} onChange={e => setFormData({...formData, unit: e.target.value})} className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Cth: Pcs, Kg" />
-              <datalist id="unit-options">
-                {uniqueUnits.map(u => (
-                  <option key={u} value={u} />
-                ))}
-              </datalist>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
               <label className="text-sm font-medium text-slate-700">Lokasi Penyimpanan</label>
               <div className="relative">
                 <select 
@@ -479,25 +463,25 @@ export const Items: React.FC = () => {
                 </div>
               </div>
             </div>
-            
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium text-slate-700">Kondisi Barang</label>
-              <div className="relative">
-                <select 
-                  required 
-                  value={formData.condition || 'Baik'} 
-                  onChange={e => setFormData({...formData, condition: e.target.value})} 
-                  className="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none bg-white"
-                >
-                  <option value="Baik">Baik</option>
-                  <option value="Kurang Baik">Kurang Baik</option>
-                  <option value="Rusak Ringan">Rusak Ringan</option>
-                  <option value="Rusak Berat">Rusak Berat</option>
-                  <option value="Perlu Perbaikan">Perlu Perbaikan</option>
-                </select>
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-sm font-medium text-slate-700">Kondisi Barang</label>
+            <div className="relative">
+              <select 
+                required 
+                value={formData.condition || 'Baik'} 
+                onChange={e => setFormData({...formData, condition: e.target.value})} 
+                className="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none bg-white"
+              >
+                <option value="Baik">Baik</option>
+                <option value="Kurang Baik">Kurang Baik</option>
+                <option value="Rusak Ringan">Rusak Ringan</option>
+                <option value="Rusak Berat">Rusak Berat</option>
+                <option value="Perlu Perbaikan">Perlu Perbaikan</option>
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
               </div>
             </div>
           </div>

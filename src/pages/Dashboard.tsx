@@ -85,7 +85,7 @@ export const Dashboard: React.FC = () => {
           <div className="bg-white p-4 md:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
             <div>
               <p className="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 px-1">Total Item</p>
-              <p className="text-xl md:text-2xl font-bold text-slate-900 px-1">{totalStock} <span className="text-[10px] md:text-sm font-normal text-slate-400">unit</span></p>
+              <p className="text-xl md:text-2xl font-bold text-slate-900 px-1">{totalStock}</p>
             </div>
           </div>
           
@@ -106,7 +106,7 @@ export const Dashboard: React.FC = () => {
           <div className="bg-rose-50 border border-rose-100 p-4 md:p-5 rounded-2xl shadow-sm flex flex-col justify-between">
             <div>
               <p className="text-[10px] md:text-xs font-bold text-rose-500 uppercase tracking-wider mb-1 px-1 truncate">Total Item Keluar</p>
-              <p className="text-xl md:text-2xl font-bold text-rose-700 px-1">{out7Days} <span className="text-[10px] md:text-sm font-normal text-rose-400">unit</span></p>
+              <p className="text-xl md:text-2xl font-bold text-rose-700 px-1">{out7Days}</p>
             </div>
           </div>
         </section>
@@ -156,7 +156,7 @@ export const Dashboard: React.FC = () => {
                         <div className="mt-1.5 w-2 h-2 rounded-full bg-rose-500 shrink-0"></div>
                         <div className="overflow-hidden">
                           <p className="text-sm font-semibold text-slate-800 truncate">{item?.name || 'Barang Terhapus'}</p>
-                          <p className="text-xs text-slate-500">{tx.date ? new Date(tx.date.toDate()).toLocaleDateString('id-ID') : ''} - Sebanyak: {tx.quantity} {item?.unit || ''}</p>
+                          <p className="text-xs text-slate-500">{tx.date ? new Date(tx.date.toDate()).toLocaleDateString('id-ID') : ''} - Sebanyak: {tx.quantity}</p>
                         </div>
                       </div>
                     )
