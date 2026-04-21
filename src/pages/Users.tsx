@@ -13,6 +13,7 @@ export const Users: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<{ id: string, name: string } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '', email: '', password: '', role: 'petugas'
@@ -59,16 +60,20 @@ export const Users: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string, role: string) => {
+  const handleDeleteClick = (user: any) => {
     if (!isAdmin) return;
-    if (role === 'admin') {
+    if (user.role === 'admin') {
       alert('Tidak dapat menghapus akun admin dari sini.');
       return;
     }
-    if (!window.confirm('Yakin ingin menghapus data pengguna ini? Catatan: Akses otentikasinya tidak akan dihapus otomatis dari console, harap atur melalui Firebase Console apabila perlu.')) return;
-    
+    setUserToDelete({ id: user.id, name: user.name });
+  };
+
+  const confirmDelete = async () => {
+    if (!userToDelete || !isAdmin) return;
     try {
-      await deleteDoc(doc(db, 'users', id));
+      await deleteDoc(doc(db, 'users', userToDelete.id));
+      setUserToDelete(null);
     } catch (err) {
       console.error(err);
       alert('Error deleting user');
@@ -140,7 +145,7 @@ export const Users: React.FC = () => {
                     </td>
                     <td className="px-6 py-4 text-center">
                       <button 
-                        onClick={() => handleDelete(user.id, user.role)} 
+                        onClick={() => handleDeleteClick(user)} 
                         disabled={user.role === 'admin'}
                         className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-md transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                         title={user.role === 'admin' ? "Admin tidak dapat dihapus" : "Hapus user"}
@@ -221,6 +226,22 @@ export const Users: React.FC = () => {
             </button>
           </div>
         </form>
+      </Modal>
+      <Modal isOpen={!!userToDelete} onClose={() => setUserToDelete(null)} title="Konfirmasi Hapus">
+        <div className="space-y-4">
+          <p className="text-sm text-slate-600">
+            Yakin ingin menghapus data pengguna <strong>{userToDelete?.name}</strong>?
+          </p>
+          <div className="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-lg text-xs leading-relaxed">
+            <strong>Catatan:</strong> Akses otentikasi (login) email/password ini tidak akan dihapus otomatis dari sistem karena batasan keamanan. Harap atur dan hapus secara manual melalui Firebase Console jika diperlukan.
+          </div>
+          <div className="pt-4 flex gap-3 justify-end">
+            <button type="button" onClick={() => setUserToDelete(null)} className="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 border border-transparent rounded-lg transition-colors">Batal</button>
+            <button onClick={confirmDelete} className="px-4 py-2 text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors shadow-sm">
+              Ya, Hapus
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

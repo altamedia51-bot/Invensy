@@ -26,6 +26,7 @@ export const Items: React.FC = () => {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Item | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<{ id: string, name: string } | null>(null);
   const [formData, setFormData] = useState({
     name: '', code: '', category: '', stock: 0, unit: '', location: ''
   });
@@ -96,10 +97,11 @@ export const Items: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!isAdmin || !window.confirm('Yakin ingin menghapus barang ini?')) return;
+  const confirmDelete = async () => {
+    if (!isAdmin || !itemToDelete) return;
     try {
-      await deleteDoc(doc(db, 'items', id));
+      await deleteDoc(doc(db, 'items', itemToDelete.id));
+      setItemToDelete(null);
     } catch (err) {
       console.error(err);
       alert('Error deleting item');
@@ -285,7 +287,7 @@ export const Items: React.FC = () => {
                           <button onClick={() => handleOpenModal(item)} className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors">
                             <Edit2 className="w-4 h-4" />
                           </button>
-                          <button onClick={() => handleDelete(item.id)} className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-md transition-colors">
+                          <button onClick={() => setItemToDelete({id: item.id, name: item.name})} className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-md transition-colors">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
@@ -370,6 +372,22 @@ export const Items: React.FC = () => {
             <button type="submit" className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shadow-sm">Simpan</button>
           </div>
         </form>
+      </Modal>
+      <Modal isOpen={!!itemToDelete} onClose={() => setItemToDelete(null)} title="Konfirmasi Hapus">
+        <div className="space-y-4">
+          <p className="text-sm text-slate-600">
+            Yakin ingin menghapus master data <strong>{itemToDelete?.name}</strong>?
+          </p>
+          <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded-lg text-xs leading-relaxed">
+            <strong>Peringatan!</strong> Menghapus master data barang dapat mempengaruhi riwayat transaksi yang merujuk pada barang ini. Operasi ini tidak dapat dibatalkan.
+          </div>
+          <div className="pt-4 flex gap-3 justify-end">
+            <button type="button" onClick={() => setItemToDelete(null)} className="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 border border-transparent rounded-lg transition-colors">Batal</button>
+            <button onClick={confirmDelete} className="px-4 py-2 text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors shadow-sm">
+              Ya, Hapus
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

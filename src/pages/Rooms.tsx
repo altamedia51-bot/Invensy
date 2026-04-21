@@ -21,6 +21,7 @@ export const Rooms: React.FC = () => {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
+  const [roomToDelete, setRoomToDelete] = useState<{ id: string, name: string } | null>(null);
   const [formData, setFormData] = useState({ name: '', description: '' });
 
   useEffect(() => {
@@ -70,10 +71,11 @@ export const Rooms: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!isAdmin || !window.confirm('Yakin ingin menghapus ruangan ini?')) return;
+  const confirmDelete = async () => {
+    if (!isAdmin || !roomToDelete) return;
     try {
-      await deleteDoc(doc(db, 'rooms', id));
+      await deleteDoc(doc(db, 'rooms', roomToDelete.id));
+      setRoomToDelete(null);
     } catch (err) {
       console.error(err);
       alert('Error deleting room');
@@ -145,7 +147,7 @@ export const Rooms: React.FC = () => {
                         <button onClick={() => handleOpenModal(room)} className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors">
                           <Edit2 className="w-4 h-4" />
                         </button>
-                        <button onClick={() => handleDelete(room.id)} className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-md transition-colors">
+                        <button onClick={() => setRoomToDelete(room)} className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-md transition-colors">
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -193,6 +195,22 @@ export const Rooms: React.FC = () => {
             <button type="submit" className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shadow-sm">Simpan</button>
           </div>
         </form>
+      </Modal>
+      <Modal isOpen={!!roomToDelete} onClose={() => setRoomToDelete(null)} title="Konfirmasi Hapus">
+        <div className="space-y-4">
+          <p className="text-sm text-slate-600">
+            Yakin ingin menghapus ruangan <strong>{roomToDelete?.name}</strong>?
+          </p>
+          <div className="bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded-lg text-xs leading-relaxed">
+            <strong>Peringatan!</strong> Tindakan ini tidak dapat dibatalkan. Pastikan tidak ada barang yang terkait dengan ruangan ini sebelum menghapusnya.
+          </div>
+          <div className="pt-4 flex gap-3 justify-end">
+            <button type="button" onClick={() => setRoomToDelete(null)} className="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 border border-transparent rounded-lg transition-colors">Batal</button>
+            <button onClick={confirmDelete} className="px-4 py-2 text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg transition-colors shadow-sm">
+              Ya, Hapus
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );
