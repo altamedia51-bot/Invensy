@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role management",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "petugas"] },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["name", "email", "role", "createdAt"]
+    },
+    "Item": {
+      "title": "Item",
+      "description": "Inventory Item",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "code": { "type": "string" },
+        "category": { "type": "string" },
+        "stock": { "type": "number" },
+        "unit": { "type": "string" },
+        "location": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["name", "code", "category", "stock", "unit", "location", "createdAt", "updatedAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Inventory IN/OUT Transaction",
+      "type": "object",
+      "properties": {
+        "itemId": { "type": "string" },
+        "type": { "type": "string", "enum": ["IN", "OUT"] },
+        "quantity": { "type": "number" },
+        "date": { "type": "number" },
+        "user": { "type": "string" },
+        "userId": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["itemId", "type", "quantity", "date", "user", "userId", "description"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Collection of all authorized users."
+    },
+    "/items/{itemId}": {
+      "schema": { "$ref": "#/entities/Item" },
+      "description": "Inventory items."
+    },
+    "/transactions/{transactionId}": {
+      "schema": { "$ref": "#/entities/Transaction" },
+      "description": "History of items IN/OUT."
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Inventory Management System",
+  "description": "Aplikasi Manajemen Inventaris Barang dengan fitur pencatatan realtime barang masuk dan keluar",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

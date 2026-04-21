@@ -1,0 +1,97 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} { 
+      allow read, write: if false; 
+    }
+
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    function isRuntimeAdmin() { return request.auth != null && request.auth.token.email == 'altamedia51@gmail.com'; }
+    function isDbAdmin() { return exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'; }
+    function isAdmin() { return isRuntimeAdmin() || isDbAdmin(); }
+    
+    // User Validator
+    function isValidUser(data) {
+      return data.keys().hasAll(['name', 'email', 'role', 'createdAt']) &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+        data.email is string && data.email.size() > 0 && data.email.size() <= 100 &&
+        data.role is string && (data.role == 'admin' || data.role == 'petugas') &&
+        data.createdAt is timestamp;
+    }
+
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(userId) && isValidUser(incoming()) && incoming().createdAt == request.time && (isAdmin() || (request.auth.uid == userId && incoming().role == 'petugas'));
+      allow update: if isSignedIn() && isValidId(userId) && isValidUser(incoming()) && (
+        isAdmin() || 
+        (request.auth.uid == userId && incoming().diff(existing()).affectedKeys().hasOnly(['name']) )
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Item Validator
+    function isValidItem(data) {
+      return data.keys().hasAll(['name', 'code', 'category', 'stock', 'unit', 'location', 'createdAt', 'updatedAt']) &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 150 &&
+        data.code is string && data.code.size() > 0 && data.code.size() <= 50 &&
+        data.category is string && data.category.size() >= 0 && data.category.size() <= 50 &&
+        data.stock is number && data.stock >= 0 &&
+        data.unit is string && data.unit.size() > 0 && data.unit.size() <= 20 &&
+        data.location is string && data.location.size() >= 0 && data.location.size() <= 100 &&
+        data.createdAt is timestamp && data.updatedAt is timestamp;
+    }
+
+    match /items/{itemId} {
+      allow get: if isSignedIn() && isValidId(itemId);
+      allow list: if isSignedIn();
+      allow create: if isAdmin() && isValidItem(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isSignedIn() && isValidItem(incoming()) && incoming().updatedAt == request.time && (
+        isAdmin() || 
+        (incoming().diff(existing()).affectedKeys().hasOnly(['stock', 'updatedAt']))
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Transaction Validator
+    function isValidTransaction(data) {
+      return data.keys().hasAll(['itemId', 'type', 'quantity', 'date', 'user', 'userId', 'description']) &&
+        data.itemId is string && data.itemId.size() > 0 && data.itemId.size() <= 128 &&
+        data.type is string && (data.type == 'IN' || data.type == 'OUT') &&
+        data.quantity is number && data.quantity > 0 &&
+        data.date is timestamp &&
+        data.user is string && data.user.size() >= 0 && data.user.size() <= 100 &&
+        data.userId is string && data.userId.size() > 0 && data.userId == request.auth.uid &&
+        data.description is string && data.description.size() >= 0 && data.description.size() <= 500;
+    }
+
+    match /transactions/{transactionId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidTransaction(incoming()) && incoming().date == request.time &&
+        existsAfter(/databases/$(database)/documents/items/$(incoming().itemId));
+      allow update: if false; 
+      allow delete: if false;
+    }
+
+    // Room Validator
+    function isValidRoom(data) {
+      return data.keys().hasAll(['name', 'description', 'createdAt', 'updatedAt']) &&
+        data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+        data.description is string && data.description.size() >= 0 && data.description.size() <= 200 &&
+        data.createdAt is timestamp && data.updatedAt is timestamp;
+    }
+
+    match /rooms/{roomId} {
+      allow get: if isSignedIn() && isValidId(roomId);
+      allow list: if isSignedIn();
+      allow create: if isAdmin() && isValidRoom(incoming()) && incoming().createdAt == request.time && incoming().updatedAt == request.time;
+      allow update: if isAdmin() && isValidRoom(incoming()) && incoming().updatedAt == request.time && 
+        (incoming().diff(existing()).affectedKeys().hasOnly(['name', 'description', 'updatedAt']));
+      allow delete: if isAdmin();
+    }
+  }
+}
