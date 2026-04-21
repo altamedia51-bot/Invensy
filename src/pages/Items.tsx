@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { collection, query, onSnapshot, doc, setDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../contexts/AuthContext';
-import { Plus, Edit2, Trash2, Search, Bell, Download, Upload } from 'lucide-react';
+import { Plus, Edit2, Trash2, Search, Bell, Download, Upload, Folder, ArrowLeft, Package } from 'lucide-react';
 import Papa from 'papaparse';
 import { Modal } from '../components/Modal';
 
@@ -34,6 +34,7 @@ export const Items: React.FC = () => {
   
   const [rooms, setRooms] = useState<{id: string, name: string}[]>([]);
   const [filterRoom, setFilterRoom] = useState('');
+  const [viewMode, setViewMode] = useState<'rooms' | 'items'>('rooms');
 
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -174,6 +175,36 @@ export const Items: React.FC = () => {
     (filterRoom === '' || item.location === filterRoom)
   );
 
+  // Auto-switch to items view when searching
+  useEffect(() => {
+    if (searchTerm.length > 0 && viewMode === 'rooms') {
+      setViewMode('items');
+      setFilterRoom('');
+    }
+  }, [searchTerm]);
+
+  const roomStats = useMemo(() => {
+    const stats: Record<string, { types: number, stock: number }> = {};
+    const initStat = (name: string) => { if (!stats[name]) stats[name] = { types: 0, stock: 0 }; };
+    
+    rooms.forEach(r => initStat(r.name));
+    initStat('Semua Ruangan');
+    initStat('Tanpa Ruangan');
+
+    items.forEach(item => {
+      const loc = item.location && stats[item.location] ? item.location : 'Tanpa Ruangan';
+      if (!stats[loc]) initStat(loc);
+      
+      stats[loc].types += 1;
+      stats[loc].stock += item.stock;
+      
+      stats['Semua Ruangan'].types += 1;
+      stats['Semua Ruangan'].stock += item.stock;
+    });
+    
+    return stats;
+  }, [items, rooms]);
+
   const uniqueCategories = Array.from(new Set(items.map(item => item.category).filter(Boolean))).sort();
   const uniqueUnits = Array.from(new Set(items.map(item => item.unit).filter(Boolean))).sort();
 
@@ -240,10 +271,14 @@ export const Items: React.FC = () => {
           <div className="relative">
              <select 
                 value={filterRoom} 
-                onChange={e => setFilterRoom(e.target.value)}
+                onChange={e => {
+                  setFilterRoom(e.target.value);
+                  setViewMode('items');
+                }}
                 className="pl-3 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none"
               >
                 <option value="">Semua Ruangan</option>
+                <option value="Tanpa Ruangan">Tanpa Ruangan</option>
                 {rooms.map(r => <option key={r.id} value={r.name}>{r.name}</option>)}
              </select>
              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -252,13 +287,75 @@ export const Items: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm flex-1 overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h3 className="font-bold text-slate-900">Daftar Barang</h3>
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{filteredItems.length} Item</span>
+        {viewMode === 'rooms' ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-8">
+            <div 
+              onClick={() => { setFilterRoom(''); setViewMode('items'); }}
+              className="bg-indigo-50/50 hover:bg-indigo-50 border border-indigo-100 p-6 rounded-2xl cursor-pointer transition-colors group flex flex-col"
+            >
+              <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-indigo-100 flex items-center justify-center text-indigo-600 mb-4 group-hover:scale-105 transition-transform">
+                <Package className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-slate-800 text-lg mb-1">Semua Barang</h3>
+              <div className="text-sm text-slate-500 flex justify-between mt-auto">
+                <span>{roomStats['Semua Ruangan']?.types || 0} Jenis</span>
+                <span className="font-semibold text-indigo-600">{roomStats['Semua Ruangan']?.stock || 0} Total Stok</span>
+              </div>
+            </div>
+
+            {rooms.map(room => (
+              <div 
+                key={room.id}
+                onClick={() => { setFilterRoom(room.name); setViewMode('items'); }}
+                className="bg-white hover:bg-slate-50 border border-slate-200 p-6 rounded-2xl cursor-pointer transition-colors shadow-sm group flex flex-col"
+              >
+                <div className="w-12 h-12 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center text-slate-400 mb-4 group-hover:bg-indigo-50 group-hover:text-indigo-600 group-hover:border-indigo-100 transition-colors">
+                  <Folder className="w-6 h-6" />
+                </div>
+                <h3 className="font-bold text-slate-800 text-lg mb-1 truncate" title={room.name}>{room.name}</h3>
+                <div className="text-sm text-slate-500 flex justify-between mt-auto">
+                  <span>{roomStats[room.name]?.types || 0} Jenis</span>
+                  <span className="font-semibold text-slate-700">{roomStats[room.name]?.stock || 0} Total Stok</span>
+                </div>
+              </div>
+            ))}
+
+            <div 
+              onClick={() => { setFilterRoom('Tanpa Ruangan'); setViewMode('items'); }}
+              className="bg-white hover:bg-slate-50 border border-slate-200 border-dashed p-6 rounded-2xl cursor-pointer transition-colors group flex flex-col"
+            >
+              <div className="w-12 h-12 bg-slate-50 rounded-xl border border-slate-200 border-dashed flex items-center justify-center text-slate-400 mb-4 group-hover:bg-slate-100 transition-colors">
+                <Folder className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-slate-600 text-lg mb-1">Belum Dialokasikan</h3>
+              <div className="text-sm text-slate-500 flex justify-between mt-auto">
+                <span>{roomStats['Tanpa Ruangan']?.types || 0} Jenis</span>
+                <span className="font-semibold text-slate-600">{roomStats['Tanpa Ruangan']?.stock || 0} Total Stok</span>
+              </div>
+            </div>
           </div>
-          <div className="overflow-x-auto flex-1">
-            <table className="w-full text-left border-collapse">
+        ) : (
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm flex-1 overflow-hidden flex flex-col">
+            <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => { setViewMode('rooms'); setSearchTerm(''); setFilterRoom(''); }}
+                  className="p-2 -ml-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
+                  title="Kembali ke Mode Ruangan"
+                >
+                  <ArrowLeft className="w-5 h-5" />
+                </button>
+                <div>
+                  <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                    {filterRoom === '' ? 'Semua Ruangan' : filterRoom === 'Tanpa Ruangan' ? 'Belum Dialokasikan' : filterRoom}
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">Melihat daftar rincian barang</p>
+                </div>
+              </div>
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider bg-slate-100 px-3 py-1 rounded-full">{filteredItems.length} Item Ditampilkan</span>
+            </div>
+            <div className="overflow-x-auto flex-1">
+              <table className="w-full text-left border-collapse">
               <thead className="bg-slate-50 border-b border-slate-100">
                 <tr className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   <th className="px-6 py-4 whitespace-nowrap">Barang & Kode</th>
@@ -311,7 +408,7 @@ export const Items: React.FC = () => {
                 ))}
                 {filteredItems.length === 0 && (
                   <tr>
-                    <td colSpan={isAdmin ? 5 : 4} className="p-8 text-center text-slate-500">
+                    <td colSpan={isAdmin ? 6 : 5} className="p-8 text-center text-slate-500">
                       Tidak ada data barang.
                     </td>
                   </tr>
@@ -320,6 +417,7 @@ export const Items: React.FC = () => {
             </table>
           </div>
         </div>
+        )}
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingItem ? "Edit Barang" : "Tambah Barang"}>
