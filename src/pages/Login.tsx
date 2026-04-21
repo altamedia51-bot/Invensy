@@ -49,7 +49,7 @@ export const Login: React.FC = () => {
         <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
           <Package className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">Inventory Management</h1>
+        <h1 className="text-2xl font-bold text-slate-900 mb-2">Smada Inventory System</h1>
         <p className="text-slate-500 mb-8">Sign in to manage your stock and transactions.</p>
         
         {errorText && (

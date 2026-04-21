@@ -62,8 +62,8 @@ export const Users: React.FC = () => {
 
   const handleDeleteClick = (user: any) => {
     if (!isAdmin) return;
-    if (user.role === 'admin') {
-      alert('Tidak dapat menghapus akun admin dari sini.');
+    if (user.id === userData?.uid) {
+      alert('Anda tidak dapat menghapus akun Anda sendiri saat sedang login.');
       return;
     }
     setUserToDelete({ id: user.id, name: user.name });
@@ -74,9 +74,9 @@ export const Users: React.FC = () => {
     try {
       await deleteDoc(doc(db, 'users', userToDelete.id));
       setUserToDelete(null);
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert('Error deleting user');
+      alert('Gagal menghapus pengguna: ' + (err.message || 'Unknown error'));
     }
   };
 
@@ -146,9 +146,9 @@ export const Users: React.FC = () => {
                     <td className="px-6 py-4 text-center">
                       <button 
                         onClick={() => handleDeleteClick(user)} 
-                        disabled={user.role === 'admin'}
+                        disabled={user.id === userData?.uid}
                         className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-md transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
-                        title={user.role === 'admin' ? "Admin tidak dapat dihapus" : "Hapus user"}
+                        title={user.id === userData?.uid ? "Tidak dapat menghapus diri sendiri" : "Hapus user"}
                       >
                         <Trash2 className="w-4 h-4 mx-auto" />
                       </button>
