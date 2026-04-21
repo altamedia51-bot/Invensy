@@ -35,13 +35,14 @@ service cloud.firestore {
 
     // Item Validator
     function isValidItem(data) {
-      return data.keys().hasAll(['name', 'code', 'category', 'stock', 'unit', 'location', 'createdAt', 'updatedAt']) &&
+      return data.keys().hasAll(['name', 'code', 'category', 'stock', 'unit', 'location', 'condition', 'createdAt', 'updatedAt']) &&
         data.name is string && data.name.size() > 0 && data.name.size() <= 150 &&
         data.code is string && data.code.size() > 0 && data.code.size() <= 50 &&
         data.category is string && data.category.size() >= 0 && data.category.size() <= 50 &&
         data.stock is number && data.stock >= 0 &&
         data.unit is string && data.unit.size() > 0 && data.unit.size() <= 20 &&
         data.location is string && data.location.size() >= 0 && data.location.size() <= 100 &&
+        data.condition is string && data.condition.size() >= 0 && data.condition.size() <= 50 &&
         data.createdAt is timestamp && data.updatedAt is timestamp;
     }
 
@@ -74,7 +75,7 @@ service cloud.firestore {
       allow create: if isSignedIn() && isValidTransaction(incoming()) && incoming().date == request.time &&
         existsAfter(/databases/$(database)/documents/items/$(incoming().itemId));
       allow update: if false; 
-      allow delete: if false;
+      allow delete: if isAdmin();
     }
 
     // Room Validator

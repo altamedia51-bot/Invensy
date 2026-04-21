@@ -14,6 +14,7 @@ interface Item {
   stock: number;
   unit: string;
   location: string;
+  condition?: string;
 }
 
 export const Items: React.FC = () => {
@@ -28,7 +29,7 @@ export const Items: React.FC = () => {
   const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [itemToDelete, setItemToDelete] = useState<{ id: string, name: string } | null>(null);
   const [formData, setFormData] = useState({
-    name: '', code: '', category: '', stock: 0, unit: '', location: ''
+    name: '', code: '', category: '', stock: 0, unit: '', location: '', condition: 'Baik'
   });
   
   const [rooms, setRooms] = useState<{id: string, name: string}[]>([]);
@@ -60,11 +61,11 @@ export const Items: React.FC = () => {
     if (item) {
       setEditingItem(item);
       setFormData({
-        name: item.name, code: item.code, category: item.category, stock: item.stock, unit: item.unit, location: item.location
+        name: item.name, code: item.code, category: item.category, stock: item.stock, unit: item.unit, location: item.location, condition: item.condition || 'Baik'
       });
     } else {
       setEditingItem(null);
-      setFormData({ name: '', code: '', category: '', stock: 0, unit: '', location: '' });
+      setFormData({ name: '', code: '', category: '', stock: 0, unit: '', location: '', condition: 'Baik' });
     }
     setIsModalOpen(true);
   };
@@ -109,7 +110,7 @@ export const Items: React.FC = () => {
   };
 
   const handleDownloadTemplate = () => {
-    const csvContent = "KODE_BARANG,NAMA_BARANG,KATEGORI,JUMLAH_AWAL,SATUAN,LOKASI\nBRG-001,Laptop Asus,Elektronik,10,Unit,Gudang A";
+    const csvContent = "KODE_BARANG,NAMA_BARANG,KATEGORI,JUMLAH_AWAL,SATUAN,LOKASI,KONDISI\nBRG-001,Laptop Asus,Elektronik,10,Unit,Gudang A,Baik";
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
@@ -143,6 +144,7 @@ export const Items: React.FC = () => {
               stock: Math.max(0, Number(row.JUMLAH_AWAL || row.STOK_AWAL) || 0),
               unit: (row.SATUAN || 'Pcs').substring(0, 20),
               location: (row.LOKASI || '').substring(0, 100),
+              condition: (row.KONDISI || 'Baik').substring(0, 50),
               createdAt: serverTimestamp(),
               updatedAt: serverTimestamp()
             });
@@ -262,6 +264,7 @@ export const Items: React.FC = () => {
                   <th className="px-6 py-4 whitespace-nowrap">Barang & Kode</th>
                   <th className="px-6 py-4 whitespace-nowrap">Kategori</th>
                   <th className="px-6 py-4 whitespace-nowrap text-right">Jumlah</th>
+                  <th className="px-6 py-4 whitespace-nowrap">Kondisi</th>
                   <th className="px-6 py-4 whitespace-nowrap">Lokasi</th>
                   {isAdmin && <th className="px-6 py-4 whitespace-nowrap text-center">Aksi</th>}
                 </tr>
@@ -279,6 +282,17 @@ export const Items: React.FC = () => {
                     <td className="px-6 py-4 text-right">
                       <span className="font-mono text-base font-bold text-slate-900">{item.stock}</span>
                       <span className="text-xs text-slate-500 ml-1">{item.unit}</span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
+                        item.condition?.toLowerCase().includes('rusak') 
+                          ? 'bg-rose-50 text-rose-600 border border-rose-100' 
+                          : item.condition?.toLowerCase() === 'kurang baik' || item.condition?.toLowerCase().includes('perbaikan')
+                            ? 'bg-amber-50 text-amber-600 border border-amber-100'
+                            : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                      }`}>
+                        {item.condition || 'Baik'}
+                      </span>
                     </td>
                     <td className="px-6 py-4 text-slate-600">{item.location}</td>
                     {isAdmin && (
@@ -347,22 +361,45 @@ export const Items: React.FC = () => {
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium text-slate-700">Lokasi Penyimpanan</label>
-            <div className="relative">
-              <select 
-                required 
-                value={formData.location} 
-                onChange={e => setFormData({...formData, location: e.target.value})} 
-                className="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none bg-white"
-              >
-                <option value="" disabled>Pilih Ruangan...</option>
-                {rooms.map(r => (
-                  <option key={r.id} value={r.name}>{r.name}</option>
-                ))}
-              </select>
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-slate-700">Lokasi Penyimpanan</label>
+              <div className="relative">
+                <select 
+                  required 
+                  value={formData.location} 
+                  onChange={e => setFormData({...formData, location: e.target.value})} 
+                  className="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none bg-white"
+                >
+                  <option value="" disabled>Pilih Ruangan...</option>
+                  {rooms.map(r => (
+                    <option key={r.id} value={r.name}>{r.name}</option>
+                  ))}
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium text-slate-700">Kondisi Barang</label>
+              <div className="relative">
+                <select 
+                  required 
+                  value={formData.condition || 'Baik'} 
+                  onChange={e => setFormData({...formData, condition: e.target.value})} 
+                  className="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none bg-white"
+                >
+                  <option value="Baik">Baik</option>
+                  <option value="Kurang Baik">Kurang Baik</option>
+                  <option value="Rusak Ringan">Rusak Ringan</option>
+                  <option value="Rusak Berat">Rusak Berat</option>
+                  <option value="Perlu Perbaikan">Perlu Perbaikan</option>
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
               </div>
             </div>
           </div>
