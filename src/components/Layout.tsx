@@ -40,7 +40,7 @@ export const Layout: React.FC = () => {
           <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
             <Menu className="w-6 h-6" />
           </button>
-          <span className="ml-3 font-bold text-lg text-slate-900 dark:text-white">Invensy</span>
+          <span className="ml-3 font-bold text-lg text-slate-900 dark:text-white uppercase">SARPRAS SMADA</span>
         </div>
         <Outlet />
       </main>

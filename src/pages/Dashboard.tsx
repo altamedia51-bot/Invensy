@@ -172,7 +172,7 @@ export const Dashboard: React.FC = () => {
             <div className="bg-indigo-600 p-6 rounded-2xl shadow-lg text-white">
               <h3 className="font-bold mb-2">Pusat Bantuan</h3>
               <p className="text-xs text-indigo-100 mb-4 leading-relaxed">
-                Ada kendala dalam sistem pencatatan Invensy? Hubungi administrator atau IT Support sekarang.
+                Ada kendala dalam sistem pencatatan SARPRAS SMADA? Hubungi administrator atau IT Support sekarang.
               </p>
               <button className="flex items-center gap-2 text-sm font-bold bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg w-fit">
                  <LifeBuoy className="w-4 h-4" />

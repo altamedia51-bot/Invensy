@@ -1,6 +1,6 @@
 {
-  "name": "Smada Inventory system",
-  "description": "Aplikasi Manajemen Inventaris Barang dengan fitur pencatatan realtime barang masuk dan keluar",
+  "name": "SARPRAS SMADA",
+  "description": "Sistem Informasi Sarana dan Prasarana SMA Negeri 2 (SARPRAS SMADA)",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }

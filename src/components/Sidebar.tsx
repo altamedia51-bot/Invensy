@@ -4,6 +4,7 @@ import { LayoutDashboard, Package, ArrowRightLeft, FileText, LogOut, Users, MapP
 import { logout } from '../lib/firebase';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { InstallPWA } from './InstallPWA';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -29,7 +30,7 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
       <div className="p-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">I</div>
-          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Invensy</span>
+          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">SARPRAS SMADA</span>
         </div>
         <button 
           onClick={toggleTheme} 
@@ -72,13 +73,17 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
               <p className="text-xs text-slate-400 capitalize truncate">{userData?.role}</p>
             </div>
           </div>
-          <button 
-            onClick={logout}
-            className="flex items-center justify-center w-full px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 dark:bg-slate-900 text-slate-300 hover:bg-rose-500 hover:text-white dark:hover:bg-rose-600 transition-colors"
-          >
-            <LogOut className="w-4 h-4 mr-2 shrink-0" />
-            Logout Account
-          </button>
+          
+          <div className="flex flex-col gap-2">
+            <InstallPWA />
+            <button 
+              onClick={logout}
+              className="flex items-center justify-center w-full px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 dark:bg-slate-900 text-slate-300 hover:bg-rose-500 hover:text-white dark:hover:bg-rose-600 transition-colors"
+            >
+              <LogOut className="w-4 h-4 mr-2 shrink-0" />
+              Logout Account
+            </button>
+          </div>
         </div>
       </div>
     </aside>
