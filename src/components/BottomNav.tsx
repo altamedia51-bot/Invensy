@@ -47,15 +47,14 @@ export const BottomNav: React.FC<BottomNavProps> = ({ onMenuClick }) => {
                     <div className={cn(
                       "w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all",
                       "border-4 border-white dark:border-slate-900",
-                      isActive 
-                        ? "bg-indigo-600 text-white scale-110" 
-                        : "bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400"
+                      "bg-indigo-600 text-white",
+                      isActive ? "scale-110" : "scale-100"
                     )}>
                       <Icon className="w-6 h-6" />
                     </div>
                     <span className={cn(
                       "text-[10px] font-bold mt-1 tracking-tight text-center uppercase",
-                      isActive ? "text-indigo-600 dark:text-indigo-400" : "text-slate-500 dark:text-slate-400"
+                      "text-indigo-600 dark:text-indigo-400"
                     )}>
                       {item.name}
                     </span>
@@ -77,7 +76,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ onMenuClick }) => {
               )}
             >
               <Icon className={cn("w-5 h-5 mb-1", "transition-transform duration-200")} />
-              <span className="text-[10px] font-medium transition-colors tracking-tight text-center">
+              <span className="text-[10px] font-bold uppercase transition-colors tracking-tight text-center">
                 {item.name}
               </span>
             </NavLink>
@@ -88,8 +87,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({ onMenuClick }) => {
           className="flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all grow text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400"
         >
           <MenuIcon className="w-5 h-5 mb-1" />
-          <span className="text-[10px] font-medium transition-colors tracking-tight text-center">
-            Menu
+          <span className="text-[10px] font-bold uppercase transition-colors tracking-tight text-center">
+            MENU
           </span>
         </button>
       </div>

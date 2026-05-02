@@ -100,7 +100,7 @@ export const Rooms: React.FC = () => {
   return (
     <div className="flex flex-col h-full w-full bg-slate-50 dark:bg-slate-950 transition-colors">
       <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 md:px-8 flex items-center justify-between shrink-0 transition-colors">
-        <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate pr-4">Master Ruangan</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate pr-4 uppercase">Master Ruangan</h1>
         <button 
           onClick={() => handleOpenModal()} 
           className="bg-indigo-600 text-white px-3 md:px-4 py-2 rounded-lg text-sm font-semibold shadow-sm hover:bg-indigo-700 transition-colors flex items-center gap-1"

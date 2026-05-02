@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
 
-export const InstallPWA: React.FC = () => {
+interface InstallPWAProps {
+  variant?: 'sidebar' | 'dashboard';
+}
+
+export const InstallPWA: React.FC<InstallPWAProps> = ({ variant = 'sidebar' }) => {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
@@ -23,17 +27,25 @@ export const InstallPWA: React.FC = () => {
       e.preventDefault();
       setDeferredPrompt(e);
       setIsInstallable(true);
+      console.log('PWA: beforeinstallprompt fired');
     };
 
     window.addEventListener('beforeinstallprompt', handler);
 
-    // Also check if we can show it for iOS users
+    // For iOS, we can show it if not standalone
     if (ios && !standalone) {
       setIsInstallable(true);
     }
 
+    // DEBUG: On some browsers it might not fire immediately
+    // or meeting PWA criteria might take a few seconds
+    const timeout = setTimeout(() => {
+      if (ios && !standalone) setIsInstallable(true);
+    }, 2000);
+
     return () => {
       window.removeEventListener('beforeinstallprompt', handler);
+      clearTimeout(timeout);
     };
   }, []);
 
@@ -43,7 +55,10 @@ export const InstallPWA: React.FC = () => {
       return;
     }
 
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      alert('Fitur instalasi belum siap atau tidak didukung oleh browser Anda. Pastikan Anda menggunakan Chrome/Edge dan sudah login.');
+      return;
+    }
 
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
@@ -57,6 +72,18 @@ export const InstallPWA: React.FC = () => {
   };
 
   if (!isInstallable || isStandalone) return null;
+
+  if (variant === 'dashboard') {
+    return (
+      <button
+        onClick={handleInstallClick}
+        className="flex items-center gap-2 text-sm font-bold bg-white text-indigo-600 hover:bg-indigo-50 transition-colors px-4 py-2 rounded-lg w-fit shadow-md mt-2"
+      >
+        <Download className="w-4 h-4 shrink-0" />
+        Instal Aplikasi
+      </button>
+    );
+  }
 
   return (
     <button

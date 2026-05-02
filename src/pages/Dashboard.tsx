@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { collection, query, onSnapshot, orderBy, where, Timestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { ArrowDownLeft, ArrowUpRight, LifeBuoy, Bell } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight, LifeBuoy, Bell, Download } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format, startOfDay, endOfDay, subDays } from 'date-fns';
+import { InstallPWA } from '../components/InstallPWA';
 
 export const Dashboard: React.FC = () => {
   const [items, setItems] = useState<any[]>([]);
@@ -67,7 +68,7 @@ export const Dashboard: React.FC = () => {
     <div className="flex flex-col h-full w-full bg-slate-50 dark:bg-slate-950 transition-colors">
       {/* Header */}
       <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 md:px-8 flex items-center justify-between shrink-0 transition-colors">
-        <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate pr-4">Dashboard</h1>
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate pr-4 uppercase">DASHBOARD</h1>
         <div className="flex items-center gap-4">
           <div className="relative">
             {out7Days > 0 && (
@@ -180,10 +181,13 @@ export const Dashboard: React.FC = () => {
               <p className="text-xs text-indigo-100 mb-4 leading-relaxed">
                 Ada kendala dalam sistem pencatatan INVENTORY? Hubungi administrator atau IT Support sekarang.
               </p>
-              <button className="flex items-center gap-2 text-sm font-bold bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg w-fit">
-                 <LifeBuoy className="w-4 h-4" />
-                 Hubungi Support
-              </button>
+              <div className="flex flex-wrap gap-3">
+                <button className="flex items-center gap-2 text-sm font-bold bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg w-fit">
+                   <LifeBuoy className="w-4 h-4" />
+                   Support
+                </button>
+                <InstallPWA variant="dashboard" />
+              </div>
             </div>
           </div>
         </section>

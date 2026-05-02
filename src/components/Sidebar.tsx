@@ -49,7 +49,7 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
               to={item.path}
               onClick={onClose}
               className={({ isActive }) => cn(
-                "px-4 py-2.5 rounded-lg flex items-center gap-3 font-medium transition-colors",
+                "px-4 py-2.5 rounded-lg flex items-center gap-3 font-bold uppercase transition-colors text-sm",
                 item.mobileNav ? "hidden md:flex" : "flex",
                 isActive 
                   ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400" 
