@@ -30,7 +30,7 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
       <div className="p-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">S</div>
-          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">SARPRAS SMADA</span>
+          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">SARPRAS</span>
         </div>
         <button 
           onClick={toggleTheme} 

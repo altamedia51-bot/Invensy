@@ -1,6 +1,6 @@
 {
-  "name": "SARPRAS SMADA",
-  "description": "Sistem Informasi Sarana dan Prasarana SMA Negeri 2 (SARPRAS SMADA)",
+  "name": "SARPRAS",
+  "description": "Sistem Informasi Sarana dan Prasarana SMA Negeri 2 (SARPRAS)",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }
