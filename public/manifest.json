@@ -1,6 +1,6 @@
 {
-  "name": "SARPRAS",
-  "short_name": "SARPRAS",
+  "name": "INVENTORY SMADA",
+  "short_name": "INVENTORY",
   "description": "Sistem Informasi Sarana dan Prasarana SMA Negeri 2",
   "start_url": "/",
   "display": "standalone",
