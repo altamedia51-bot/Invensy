@@ -13,12 +13,12 @@ export function cn(...inputs: (string | undefined | null | false)[]) {
 }
 
 const navItems = [
-  { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['admin', 'petugas'] },
-  { name: 'Master Ruangan', path: '/rooms', icon: MapPin, roles: ['admin', 'petugas'] },
-  { name: 'Master Data', path: '/items', icon: Package, roles: ['admin', 'petugas'] },
-  { name: 'Transaksi', path: '/transactions', icon: ArrowRightLeft, roles: ['admin', 'petugas'] },
-  { name: 'Laporan', path: '/reports', icon: FileText, roles: ['admin', 'petugas'] },
-  { name: 'Pengguna', path: '/users', icon: Users, roles: ['admin'] },
+  { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['admin', 'petugas'], mobileNav: true },
+  { name: 'Master Ruangan', path: '/rooms', icon: MapPin, roles: ['admin', 'petugas'], mobileNav: true },
+  { name: 'Master Data', path: '/items', icon: Package, roles: ['admin', 'petugas'], mobileNav: true },
+  { name: 'Transaksi', path: '/transactions', icon: ArrowRightLeft, roles: ['admin', 'petugas'], mobileNav: true },
+  { name: 'Laporan', path: '/reports', icon: FileText, roles: ['admin', 'petugas'], mobileNav: true },
+  { name: 'Pengguna', path: '/users', icon: Users, roles: ['admin'], mobileNav: false },
 ];
 
 export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
@@ -50,6 +50,7 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
               onClick={onClose}
               className={({ isActive }) => cn(
                 "px-4 py-2.5 rounded-lg flex items-center gap-3 font-medium transition-colors",
+                item.mobileNav ? "hidden md:flex" : "flex",
                 isActive 
                   ? "bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400" 
                   : "text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800/50 dark:text-slate-400 dark:hover:text-slate-200"
