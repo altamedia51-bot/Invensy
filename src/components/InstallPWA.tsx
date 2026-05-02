@@ -71,13 +71,15 @@ export const InstallPWA: React.FC<InstallPWAProps> = ({ variant = 'sidebar' }) =
     setIsInstallable(false);
   };
 
-  if (!isInstallable || isStandalone) return null;
+  if (isStandalone) {
+    return null;
+  }
 
   if (variant === 'dashboard') {
     return (
       <button
         onClick={handleInstallClick}
-        className="flex items-center gap-2 text-sm font-bold bg-white text-indigo-600 hover:bg-indigo-50 transition-colors px-4 py-2 rounded-lg w-fit shadow-md mt-2"
+        className="flex items-center gap-2 text-sm font-bold bg-white text-indigo-600 hover:bg-indigo-50 transition-colors px-4 py-2 rounded-lg w-fit shadow-md mt-2 uppercase"
       >
         <Download className="w-4 h-4 shrink-0" />
         Instal Aplikasi
@@ -88,10 +90,10 @@ export const InstallPWA: React.FC<InstallPWAProps> = ({ variant = 'sidebar' }) =
   return (
     <button
       onClick={handleInstallClick}
-      className="flex items-center justify-center w-full px-3 py-2 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-sm mb-2"
+      className="flex items-center justify-center w-full px-3 py-2 rounded-lg text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-sm mb-2 uppercase tracking-tight"
     >
       <Download className="w-4 h-4 mr-2 shrink-0" />
-      Install App
+      Instal Aplikasi
     </button>
   );
 };
