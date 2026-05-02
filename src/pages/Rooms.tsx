@@ -98,9 +98,9 @@ export const Rooms: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <header className="h-16 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between shrink-0">
-        <h1 className="text-xl font-bold text-slate-900 truncate pr-4">Master Ruangan</h1>
+    <div className="flex flex-col h-full w-full bg-slate-50 dark:bg-slate-950 transition-colors">
+      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 md:px-8 flex items-center justify-between shrink-0 transition-colors">
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate pr-4">Master Ruangan</h1>
         <button 
           onClick={() => handleOpenModal()} 
           className="bg-indigo-600 text-white px-3 md:px-4 py-2 rounded-lg text-sm font-semibold shadow-sm hover:bg-indigo-700 transition-colors flex items-center gap-1"
@@ -110,8 +110,8 @@ export const Rooms: React.FC = () => {
         </button>
       </header>
 
-      <div className="p-4 md:p-8 flex-1 overflow-y-auto w-full max-w-5xl mx-auto flex flex-col">
-        <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm mb-6 flex items-center">
+      <div className="p-4 md:p-8 flex-1 overflow-y-auto w-full max-w-5xl mx-auto flex flex-col gap-6">
+        <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center transition-colors">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
@@ -119,19 +119,19 @@ export const Rooms: React.FC = () => {
               placeholder="Cari berdasarkan nama atau keterangan..." 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow"
+              className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all dark:text-slate-200"
             />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm flex-1 overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h3 className="font-bold text-slate-900">Daftar Ruangan</h3>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex-1 overflow-hidden flex flex-col transition-colors">
+          <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <h3 className="font-bold text-slate-900 dark:text-white">Daftar Ruangan</h3>
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">{filteredRooms.length} Ruangan</span>
           </div>
           <div className="overflow-x-auto flex-1">
             <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-50 border-b border-slate-100">
+              <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                 <tr className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   <th className="px-6 py-4 whitespace-nowrap">Nama Ruangan</th>
                   <th className="px-6 py-4 whitespace-nowrap">Penanggung Jawab</th>
@@ -139,17 +139,17 @@ export const Rooms: React.FC = () => {
                   <th className="px-6 py-4 whitespace-nowrap text-center">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-sm">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
                 {filteredRooms.map(room => (
-                  <tr key={room.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={room.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="font-bold flex items-center gap-2 text-slate-900">
+                      <div className="font-bold flex items-center gap-2 text-slate-900 dark:text-slate-200">
                         <MapPin className="w-4 h-4 text-indigo-500" />
                         {room.name}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-slate-700 font-medium">{room.manager || '-'}</td>
-                    <td className="px-6 py-4 text-slate-600">{room.description || '-'}</td>
+                    <td className="px-6 py-4 text-slate-700 dark:text-slate-300 font-medium">{room.manager || '-'}</td>
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{room.description || '-'}</td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <button onClick={() => handleOpenModal(room)} className="p-1.5 text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors">

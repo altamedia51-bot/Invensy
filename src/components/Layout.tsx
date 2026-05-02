@@ -37,17 +37,11 @@ export const Layout: React.FC = () => {
       </div>
 
       <main className="flex-1 overflow-y-auto flex flex-col bg-slate-50 dark:bg-slate-950 w-full min-w-0 transition-colors pb-16 md:pb-0">
-        <div className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 h-16 flex items-center justify-between px-4 shrink-0 transition-colors sticky top-0 z-30">
-          <span className="font-bold text-lg text-slate-900 dark:text-white uppercase tracking-tight">SARPRAS SMADA</span>
-          <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
-            <Menu className="w-6 h-6" />
-          </button>
-        </div>
         <Outlet />
       </main>
 
       {/* Bottom Navigation for Mobile */}
-      <BottomNav />
+      <BottomNav onMenuClick={() => setIsMobileMenuOpen(true)} />
     </div>
   );
 };

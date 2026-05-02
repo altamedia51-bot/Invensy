@@ -206,9 +206,9 @@ export const Items: React.FC = () => {
   const uniqueCategories = Array.from(new Set(items.map(item => item.category).filter(Boolean))).sort();
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <header className="h-16 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between shrink-0">
-        <h1 className="text-xl font-bold text-slate-900 truncate pr-4">Master Data</h1>
+    <div className="flex flex-col h-full w-full bg-slate-50 dark:bg-slate-950 transition-colors">
+      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 md:px-8 flex items-center justify-between shrink-0 transition-colors">
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate pr-4">Master Data</h1>
         <div className="flex items-center gap-2 md:gap-4 shrink-0">
           <div className="relative hidden md:block">
             <Bell className="w-6 h-6 text-slate-400" />
@@ -253,8 +253,8 @@ export const Items: React.FC = () => {
         </div>
       </header>
 
-      <div className="p-4 md:p-8 flex-1 overflow-y-auto w-full max-w-7xl mx-auto flex flex-col">
-        <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-stretch md:items-center">
+      <div className="p-4 md:p-8 flex-1 overflow-y-auto w-full max-w-7xl mx-auto flex flex-col gap-6">
+        <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-4 items-stretch md:items-center transition-colors">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
@@ -262,7 +262,7 @@ export const Items: React.FC = () => {
               placeholder="Cari berdasarkan nama, kode, atau kategori..." 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow"
+              className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all dark:text-slate-200"
             />
           </div>
           <div className="relative">
@@ -272,7 +272,7 @@ export const Items: React.FC = () => {
                   setFilterRoom(e.target.value);
                   setViewMode('items');
                 }}
-                className="pl-3 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none"
+                className="w-full md:w-auto pl-3 pr-8 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none appearance-none dark:text-slate-200"
               >
                 <option value="">Semua Ruangan</option>
                 <option value="Tanpa Ruangan">Tanpa Ruangan</option>
@@ -288,15 +288,15 @@ export const Items: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-8">
             <div 
               onClick={() => { setFilterRoom(''); setViewMode('items'); }}
-              className="bg-indigo-50/50 hover:bg-indigo-50 border border-indigo-100 p-6 rounded-2xl cursor-pointer transition-colors group flex flex-col"
+              className="bg-indigo-50/50 dark:bg-indigo-900/20 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-900/40 p-6 rounded-2xl cursor-pointer transition-all group flex flex-col"
             >
-              <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-indigo-100 flex items-center justify-center text-indigo-600 mb-4 group-hover:scale-105 transition-transform">
+              <div className="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-indigo-100 dark:border-indigo-900/40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-4 group-hover:scale-105 transition-transform">
                 <Package className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-slate-800 text-lg mb-1">Semua Barang</h3>
-              <div className="text-sm text-slate-500 flex justify-between mt-auto">
+              <h3 className="font-bold text-slate-800 dark:text-slate-100 text-lg mb-1">Semua Barang</h3>
+              <div className="text-sm text-slate-500 dark:text-slate-400 flex justify-between mt-auto">
                 <span>{roomStats['Semua Ruangan']?.types || 0} Jenis</span>
-                <span className="font-semibold text-indigo-600">{roomStats['Semua Ruangan']?.stock || 0} Total Stok</span>
+                <span className="font-semibold text-indigo-600 dark:text-indigo-400">{roomStats['Semua Ruangan']?.stock || 0} Total Stok</span>
               </div>
             </div>
 
@@ -304,16 +304,16 @@ export const Items: React.FC = () => {
               <div 
                 key={room.id}
                 onClick={() => { setFilterRoom(room.name); setViewMode('items'); }}
-                className="bg-white hover:bg-slate-50 border border-slate-200 p-6 rounded-2xl cursor-pointer transition-colors shadow-sm group flex flex-col"
+                className="bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl cursor-pointer transition-all shadow-sm group flex flex-col"
               >
-                <div className="w-12 h-12 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center text-slate-400 mb-4 group-hover:bg-indigo-50 group-hover:text-indigo-600 group-hover:border-indigo-100 transition-colors">
+                <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center justify-center text-slate-400 mb-4 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/30 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:border-indigo-100 dark:group-hover:border-indigo-900/40 transition-colors">
                   <Folder className="w-6 h-6" />
                 </div>
-                <h3 className="font-bold text-slate-800 text-lg mb-1 truncate" title={room.name}>{room.name}</h3>
-                <p className="text-xs text-slate-400 mb-4 font-medium italic">PJ: {room.manager || '-'}</p>
-                <div className="text-sm text-slate-500 flex justify-between mt-auto">
+                <h3 className="font-bold text-slate-800 dark:text-slate-200 text-lg mb-1 truncate" title={room.name}>{room.name}</h3>
+                <p className="text-xs text-slate-400 dark:text-slate-500 mb-4 font-medium italic">PJ: {room.manager || '-'}</p>
+                <div className="text-sm text-slate-500 dark:text-slate-400 flex justify-between mt-auto">
                   <span>{roomStats[room.name]?.types || 0} Jenis</span>
-                  <span className="font-semibold text-slate-700">{roomStats[room.name]?.stock || 0} Total Stok</span>
+                  <span className="font-semibold text-slate-700 dark:text-slate-300">{roomStats[room.name]?.stock || 0} Total Stok</span>
                 </div>
               </div>
             ))}
@@ -333,28 +333,28 @@ export const Items: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm flex-1 overflow-hidden flex flex-col">
-            <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex-1 overflow-hidden flex flex-col transition-colors">
+            <div className="p-4 md:p-6 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <button 
                   onClick={() => { setViewMode('rooms'); setSearchTerm(''); setFilterRoom(''); }}
-                  className="p-2 -ml-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
+                  className="p-2 -ml-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors cursor-pointer"
                   title="Kembali ke Mode Ruangan"
                 >
                   <ArrowLeft className="w-5 h-5" />
                 </button>
                 <div>
-                  <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                  <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     {filterRoom === '' ? 'Semua Ruangan' : filterRoom === 'Tanpa Ruangan' ? 'Belum Dialokasikan' : filterRoom}
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5">Melihat daftar rincian barang</p>
                 </div>
               </div>
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider bg-slate-100 px-3 py-1 rounded-full">{filteredItems.length} Item Ditampilkan</span>
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">{filteredItems.length} Item Ditampilkan</span>
             </div>
             <div className="overflow-x-auto flex-1">
               <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-50 border-b border-slate-100">
+              <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                 <tr className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   <th className="px-6 py-4 whitespace-nowrap">Barang & Kode</th>
                   <th className="px-6 py-4 whitespace-nowrap">Kategori</th>
@@ -364,31 +364,31 @@ export const Items: React.FC = () => {
                   {isAdmin && <th className="px-6 py-4 whitespace-nowrap text-center">Aksi</th>}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-sm">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
                 {filteredItems.map(item => (
-                  <tr key={item.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="font-semibold text-slate-900">{item.name}</div>
+                      <div className="font-semibold text-slate-900 dark:text-slate-200">{item.name}</div>
                       <div className="text-xs text-slate-400 font-mono mt-0.5">{item.code}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">{item.category}</span>
+                      <span className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">{item.category}</span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <span className="font-mono text-base font-bold text-slate-900">{item.stock}</span>
+                      <span className="font-mono text-base font-bold text-slate-900 dark:text-slate-200">{item.stock}</span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
+                      <span className={`inline-flex items-center px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider whitespace-nowrap ${
                         item.condition?.toLowerCase().includes('rusak') 
-                          ? 'bg-rose-50 text-rose-600 border border-rose-100' 
+                          ? 'bg-rose-50 dark:bg-rose-900/10 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/30' 
                           : item.condition?.toLowerCase() === 'kurang baik' || item.condition?.toLowerCase().includes('perbaikan')
-                            ? 'bg-amber-50 text-amber-600 border border-amber-100'
-                            : 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                            ? 'bg-amber-50 dark:bg-amber-900/10 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30'
+                            : 'bg-emerald-50 dark:bg-emerald-900/10 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30'
                       }`}>
                         {item.condition || 'Baik'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-slate-600">{item.location}</td>
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{item.location}</td>
                     {isAdmin && (
                       <td className="px-6 py-4 text-center">
                         <div className="flex items-center justify-center gap-2">

@@ -119,9 +119,9 @@ export const Reports: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <header className="h-16 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between shrink-0">
-        <h1 className="text-xl font-bold text-slate-900 truncate pr-4">Laporan</h1>
+    <div className="flex flex-col h-full w-full bg-slate-50 dark:bg-slate-950 transition-colors">
+      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 md:px-8 flex items-center justify-between shrink-0 transition-colors">
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate pr-4">Laporan</h1>
         <div className="flex items-center gap-4">
           <div className="relative hidden md:block">
             <Bell className="w-6 h-6 text-slate-400" />
@@ -131,33 +131,33 @@ export const Reports: React.FC = () => {
       
       <div className="p-4 md:p-8 flex-1 overflow-y-auto w-full max-w-7xl mx-auto flex flex-col space-y-6">
         {/* Filter Panel */}
-        <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Filter Laporan</h2>
+        <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+          <h2 className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-4">Filter Laporan</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700">Mulai Tanggal</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Mulai Tanggal</label>
               <input 
                 type="date" 
                 value={startDate}
                 onChange={e => setStartDate(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50" 
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50 dark:bg-slate-800 dark:text-slate-200" 
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700">Sampai Tanggal</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Sampai Tanggal</label>
               <input 
                 type="date" 
                 value={endDate}
                 onChange={e => setEndDate(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50" 
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50 dark:bg-slate-800 dark:text-slate-200" 
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700">Tipe Transaksi</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Tipe Transaksi</label>
               <select 
                 value={filterType}
                 onChange={e => setFilterType(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50"
+                className="w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50 dark:bg-slate-800 dark:text-slate-200"
               >
                 <option value="ALL">Semua Transaksi</option>
                 <option value="IN">Barang Masuk</option>
@@ -165,7 +165,7 @@ export const Reports: React.FC = () => {
               </select>
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700">Cari Barang</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Cari Barang</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input 
@@ -173,7 +173,7 @@ export const Reports: React.FC = () => {
                   placeholder="Nama / Kode" 
                   value={searchItem}
                   onChange={e => setSearchItem(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50" 
+                  className="w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-slate-50 dark:bg-slate-800 dark:text-slate-200" 
                 />
               </div>
             </div>
@@ -181,11 +181,11 @@ export const Reports: React.FC = () => {
         </div>
 
         {/* Data View */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm flex-1 overflow-hidden flex flex-col">
-          <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex-1 overflow-hidden flex flex-col transition-colors">
+          <div className="p-4 md:p-6 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
             <div>
-              <h3 className="font-bold text-slate-900">Hasil Pencarian</h3>
-              <p className="text-sm text-slate-500">Menampilkan <span className="font-bold text-indigo-600">{filteredData.length}</span> transaksi</p>
+              <h3 className="font-bold text-slate-900 dark:text-white">Hasil Pencarian</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-500">Menampilkan <span className="font-bold text-indigo-600 dark:text-indigo-400">{filteredData.length}</span> transaksi</p>
             </div>
             <div className="flex flex-wrap gap-2">
               <button onClick={handleExportPDF} className="flex-1 sm:flex-none justify-center flex items-center gap-2 bg-rose-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-rose-700 transition-colors shadow-sm">
@@ -198,7 +198,7 @@ export const Reports: React.FC = () => {
           </div>
           <div className="overflow-x-auto flex-1">
             <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-50 border-b border-slate-100">
+              <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                 <tr className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   <th className="px-6 py-4 whitespace-nowrap">Tanggal</th>
                   <th className="px-6 py-4 whitespace-nowrap text-center">Tipe</th>
@@ -208,31 +208,31 @@ export const Reports: React.FC = () => {
                   <th className="px-6 py-4 whitespace-nowrap">Peminjam</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-sm">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
                 {filteredData.map(tx => (
-                  <tr key={tx.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4 text-slate-600 whitespace-nowrap font-medium">
+                  <tr key={tx.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400 whitespace-nowrap font-medium">
                       {tx.date ? format(tx.date.toDate(), 'dd MMM yyyy, HH:mm') : '-'}
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${tx.type === 'IN' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                      <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${tx.type === 'IN' ? 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' : 'bg-rose-100 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400'}`}>
                         {tx.type === 'IN' ? 'Masuk' : 'Keluar'}
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-semibold text-slate-900">{tx.itemName}</div>
+                      <div className="font-semibold text-slate-900 dark:text-slate-200">{tx.itemName}</div>
                       <div className="text-xs text-slate-400 font-mono mt-0.5">{tx.itemCode}</div>
                     </td>
-                    <td className="px-6 py-4 text-right font-mono font-bold text-slate-900">
+                    <td className="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">
                       {tx.quantity}
                     </td>
-                    <td className="px-6 py-4 text-slate-600 font-medium">
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400 font-medium">
                       {tx.user}
                     </td>
-                    <td className="px-6 py-4 text-slate-600">
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400">
                       {tx.type === 'OUT' ? (
                         <div>
-                          <div className="font-semibold text-slate-900">{tx.borrowerName || '-'}</div>
+                          <div className="font-semibold text-slate-900 dark:text-slate-200">{tx.borrowerName || '-'}</div>
                           <div className="text-xs text-slate-400 mt-0.5">{tx.borrowerUnit || '-'}</div>
                         </div>
                       ) : (

@@ -29,7 +29,7 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
     <aside className="w-64 h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col text-slate-800 dark:text-slate-200 transition-colors">
       <div className="p-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">I</div>
+          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">S</div>
           <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">SARPRAS SMADA</span>
         </div>
         <button 

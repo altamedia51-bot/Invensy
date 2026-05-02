@@ -173,9 +173,9 @@ export const Transactions: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <header className="h-16 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between shrink-0">
-        <h1 className="text-xl font-bold text-slate-900 truncate pr-4">Transaksi</h1>
+    <div className="flex flex-col h-full w-full bg-slate-50 dark:bg-slate-950 transition-colors">
+      <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 md:px-8 flex items-center justify-between shrink-0 transition-colors">
+        <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate pr-4">Transaksi</h1>
         <div className="flex items-center gap-2 md:gap-4 shrink-0">
           <div className="relative mr-2 hidden md:block">
             <Bell className="w-6 h-6 text-slate-400" />
@@ -195,8 +195,8 @@ export const Transactions: React.FC = () => {
         </div>
       </header>
 
-      <div className="p-4 md:p-8 flex-1 overflow-y-auto w-full max-w-7xl mx-auto flex flex-col">
-        <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm mb-6 flex flex-col items-stretch">
+      <div className="p-4 md:p-8 flex-1 overflow-y-auto w-full max-w-7xl mx-auto flex flex-col gap-6">
+        <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-stretch transition-colors">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input 
@@ -204,14 +204,14 @@ export const Transactions: React.FC = () => {
               placeholder="Cari transaksi by user, barang, kode..." 
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-shadow"
+              className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all dark:text-slate-200"
             />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm flex-1 overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-            <h3 className="font-bold text-slate-900">Riwayat Transaksi Terkini</h3>
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex-1 overflow-hidden flex flex-col transition-colors">
+          <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <h3 className="font-bold text-slate-900 dark:text-white">Riwayat Transaksi Terkini</h3>
             <span className="flex items-center gap-2 text-xs text-emerald-500 font-semibold">
               <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
               LIVE
@@ -219,7 +219,7 @@ export const Transactions: React.FC = () => {
           </div>
           <div className="overflow-x-auto flex-1">
             <table className="w-full text-left border-collapse">
-              <thead className="bg-slate-50 border-b border-slate-100">
+              <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
                 <tr className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   <th className="px-6 py-4 whitespace-nowrap">Barang & Kode</th>
                   <th className="px-6 py-4 whitespace-nowrap text-center">Tipe</th>
@@ -231,38 +231,38 @@ export const Transactions: React.FC = () => {
                   {isAdmin && <th className="px-6 py-4 whitespace-nowrap text-center">Aksi</th>}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-sm">
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
                 {filteredTx.map(tx => (
-                  <tr key={tx.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={tx.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="font-semibold text-slate-900">{tx.itemName}</div>
+                      <div className="font-semibold text-slate-900 dark:text-slate-200">{tx.itemName}</div>
                       <div className="text-xs text-slate-400 font-mono mt-0.5">{tx.itemCode}</div>
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${tx.type === 'IN' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}`}>
+                      <span className={`inline-flex px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${tx.type === 'IN' ? 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' : 'bg-rose-100 dark:bg-rose-900/20 text-rose-700 dark:text-rose-400'}`}>
                         {tx.type === 'IN' ? 'Kembali' : 'Dipinjam'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right font-mono font-bold">
-                      <span className={tx.type === 'IN' ? 'text-emerald-600' : 'text-rose-600'}>
+                      <span className={tx.type === 'IN' ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}>
                         {tx.type === 'IN' ? '+' : '-'}{tx.quantity}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-600">
+                    <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">
                       {tx.date ? format(tx.date.toDate(), 'dd MMM yyyy HH:mm') : '-'}
                     </td>
                     <td className="px-6 py-4">
                       {tx.borrowerName ? (
                         <div>
-                          <div className="font-medium text-slate-800">{tx.borrowerName}</div>
-                          {tx.borrowerUnit && <div className="text-xs text-slate-500">{tx.borrowerUnit}</div>}
+                          <div className="font-medium text-slate-800 dark:text-slate-200">{tx.borrowerName}</div>
+                          {tx.borrowerUnit && <div className="text-xs text-slate-500 dark:text-slate-500">{tx.borrowerUnit}</div>}
                         </div>
                       ) : (
                         <span className="text-slate-400">-</span>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-sm font-medium text-slate-700">{tx.user}</td>
-                    <td className="px-6 py-4 text-slate-500 max-w-[200px] truncate" title={tx.description}>{tx.description}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-slate-700 dark:text-slate-300">{tx.user}</td>
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-500 max-w-[200px] truncate" title={tx.description}>{tx.description}</td>
                     {isAdmin && (
                       <td className="px-6 py-4 text-center">
                         <button onClick={() => setTxToDelete(tx.id)} className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-md transition-colors" title="Hapus Riwayat">

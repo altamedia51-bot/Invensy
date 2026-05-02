@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, ArrowRightLeft, FileText, MapPin } from 'lucide-react';
+import { LayoutDashboard, Package, ArrowRightLeft, FileText, MapPin, Menu as MenuIcon } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { twMerge } from 'tailwind-merge';
 import clsx from 'clsx';
@@ -9,7 +9,11 @@ function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs));
 }
 
-export const BottomNav: React.FC = () => {
+interface BottomNavProps {
+  onMenuClick: () => void;
+}
+
+export const BottomNav: React.FC<BottomNavProps> = ({ onMenuClick }) => {
   const { userData } = useAuth();
   
   const navItems = [
@@ -39,12 +43,21 @@ export const BottomNav: React.FC = () => {
               )}
             >
               <Icon className={cn("w-5 h-5 mb-1", "transition-transform duration-200")} />
-              <span className="text-[10px] font-medium transition-colors tracking-tight">
+              <span className="text-[10px] font-medium transition-colors tracking-tight text-center">
                 {item.name}
               </span>
             </NavLink>
           );
         })}
+        <button
+          onClick={onMenuClick}
+          className="flex flex-col items-center justify-center py-2 px-1 rounded-xl transition-all grow text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400"
+        >
+          <MenuIcon className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-medium transition-colors tracking-tight text-center">
+            Menu
+          </span>
+        </button>
       </div>
     </nav>
   );
