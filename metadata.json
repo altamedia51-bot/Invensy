@@ -1,6 +1,6 @@
 {
-  "name": "INVENTORY SMADA",
-  "description": "Sistem Informasi Sarana dan Prasarana SMA Negeri 2 (INVENTORY SMADA)",
+  "name": "INVENTORY",
+  "description": "Sistem Informasi Sarana dan Prasarana SMA Negeri 2 (INVENTORY)",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }

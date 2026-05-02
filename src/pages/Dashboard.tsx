@@ -69,7 +69,7 @@ export const Dashboard: React.FC = () => {
       <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 md:px-8 flex items-center justify-between shrink-0 transition-colors">
         <h1 className="text-xl font-bold text-slate-900 dark:text-white truncate pr-4">Dashboard</h1>
         <div className="flex items-center gap-4">
-          <div className="relative hidden md:block">
+          <div className="relative">
             {out7Days > 0 && (
               <span className="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full"></span>
             )}
@@ -178,7 +178,7 @@ export const Dashboard: React.FC = () => {
             <div className="bg-indigo-600 p-6 rounded-2xl shadow-lg text-white">
               <h3 className="font-bold mb-2">Pusat Bantuan</h3>
               <p className="text-xs text-indigo-100 mb-4 leading-relaxed">
-                Ada kendala dalam sistem pencatatan INVENTORY SMADA? Hubungi administrator atau IT Support sekarang.
+                Ada kendala dalam sistem pencatatan INVENTORY? Hubungi administrator atau IT Support sekarang.
               </p>
               <button className="flex items-center gap-2 text-sm font-bold bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg w-fit">
                  <LifeBuoy className="w-4 h-4" />

@@ -13,12 +13,12 @@ export function cn(...inputs: (string | undefined | null | false)[]) {
 }
 
 const navItems = [
-  { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['admin', 'petugas'], mobileNav: true },
-  { name: 'Master Ruangan', path: '/rooms', icon: MapPin, roles: ['admin', 'petugas'], mobileNav: true },
-  { name: 'Master Data', path: '/items', icon: Package, roles: ['admin', 'petugas'], mobileNav: true },
-  { name: 'Transaksi', path: '/transactions', icon: ArrowRightLeft, roles: ['admin', 'petugas'], mobileNav: true },
-  { name: 'Laporan', path: '/reports', icon: FileText, roles: ['admin', 'petugas'], mobileNav: true },
-  { name: 'Pengguna', path: '/users', icon: Users, roles: ['admin'], mobileNav: false },
+    { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['admin', 'petugas'], mobileNav: true },
+    { name: 'Master Ruangan', path: '/rooms', icon: MapPin, roles: ['admin', 'petugas'], mobileNav: true },
+    { name: 'Inventory', path: '/items', icon: Package, roles: ['admin', 'petugas'], mobileNav: true },
+    { name: 'Transaksi', path: '/transactions', icon: ArrowRightLeft, roles: ['admin', 'petugas'], mobileNav: false },
+    { name: 'Laporan', path: '/reports', icon: FileText, roles: ['admin', 'petugas'], mobileNav: true },
+    { name: 'Pengguna', path: '/users', icon: Users, roles: ['admin'], mobileNav: false },
 ];
 
 export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
@@ -30,7 +30,7 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
       <div className="p-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">S</div>
-          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">INVENTORY SMADA</span>
+          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">INVENTORY</span>
         </div>
         <button 
           onClick={toggleTheme} 

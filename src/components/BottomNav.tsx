@@ -17,10 +17,9 @@ export const BottomNav: React.FC<BottomNavProps> = ({ onMenuClick }) => {
   const { userData } = useAuth();
   
   const navItems = [
-    { name: 'Home', path: '/', icon: LayoutDashboard, roles: ['admin', 'petugas'] },
+    { name: 'Dashboard', path: '/', icon: LayoutDashboard, roles: ['admin', 'petugas'] },
+    { name: 'Inventory', path: '/items', icon: Package, roles: ['admin', 'petugas'] },
     { name: 'Ruangan', path: '/rooms', icon: MapPin, roles: ['admin', 'petugas'] },
-    { name: 'Data', path: '/items', icon: Package, roles: ['admin', 'petugas'] },
-    { name: 'Transaksi', path: '/transactions', icon: ArrowRightLeft, roles: ['admin', 'petugas'] },
     { name: 'Laporan', path: '/reports', icon: FileText, roles: ['admin', 'petugas'] },
   ];
 
@@ -31,6 +30,41 @@ export const BottomNav: React.FC<BottomNavProps> = ({ onMenuClick }) => {
       <div className="flex items-center justify-around">
         {filteredItems.map((item) => {
           const Icon = item.icon;
+          const isSpecial = item.name === 'Ruangan';
+
+          if (isSpecial) {
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) => cn(
+                  "flex flex-col items-center justify-center -mt-8 mx-1 z-10",
+                  "transition-all duration-300 transform active:scale-95"
+                )}
+              >
+                {({ isActive }) => (
+                  <>
+                    <div className={cn(
+                      "w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all",
+                      "border-4 border-white dark:border-slate-900",
+                      isActive 
+                        ? "bg-indigo-600 text-white scale-110" 
+                        : "bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400"
+                    )}>
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <span className={cn(
+                      "text-[10px] font-bold mt-1 tracking-tight text-center uppercase",
+                      isActive ? "text-indigo-600 dark:text-indigo-400" : "text-slate-500 dark:text-slate-400"
+                    )}>
+                      {item.name}
+                    </span>
+                  </>
+                )}
+              </NavLink>
+            );
+          }
+
           return (
             <NavLink
               key={item.path}
