@@ -29,8 +29,11 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
     <aside className="w-64 h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col text-slate-800 dark:text-slate-200 transition-colors">
       <div className="p-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">S</div>
-          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white uppercase">INVENTORY</span>
+          <div className="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shrink-0 shadow-sm">S</div>
+          <div className="flex flex-col leading-none">
+            <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 tracking-wider">SMADA</span>
+            <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white uppercase">INVENTORY</span>
+          </div>
         </div>
         <button 
           onClick={toggleTheme} 

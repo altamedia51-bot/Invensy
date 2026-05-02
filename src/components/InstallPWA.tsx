@@ -56,7 +56,11 @@ export const InstallPWA: React.FC<InstallPWAProps> = ({ variant = 'sidebar' }) =
     }
 
     if (!deferredPrompt) {
-      alert('Fitur instalasi belum siap atau tidak didukung oleh browser Anda. Pastikan Anda menggunakan Chrome/Edge dan sudah login.');
+      if (isIOS) {
+        alert('Untuk menginstal di iPhone: Klik tombol "Share" (kotak dengan panah ke atas) di browser Safari, lalu pilih "Add to Home Screen".');
+      } else {
+        alert('Sistem instalasi otomatis sedang disiapkan oleh browser. \n\nTips: Jika tombol tidak merespons, Anda bisa klik titik tiga (⋮) di pojok kanan atas Chrome, lalu pilih "Instal Aplikasi" atau "Tambahkan ke Layar Utama".');
+      }
       return;
     }
 
